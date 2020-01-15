@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -36,7 +37,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ReqAbility2")]
         public uint? ReqAbility2;
 
-        [DBFieldName("ReqAbility3")]
+        [DBFieldName("ReqAbility3", TargetedDatabase.WarlordsOfDraenor)]
         public uint? ReqAbility3;
 
         [DBFieldName("ReqLevel")]

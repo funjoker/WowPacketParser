@@ -359,10 +359,11 @@ namespace WowPacketParser.Loading
                     reader.PacketReader.Dispose();
 
                     var version = ClientVersion.IsUndefined() ? "unknown" : ClientVersion.VersionString;
+                    string locale = ClientLocale.PacketLocaleString == null ? "unknown" : ClientLocale.PacketLocaleString;
 
                     var realFileName = GetCompressedFileName();
 
-                    var destPath = Path.Combine(Path.GetDirectoryName(realFileName), version,
+                    var destPath = Path.Combine(Path.GetDirectoryName(realFileName), locale, version,
                         Path.GetFileName(realFileName));
 
                     var destDir = Path.GetDirectoryName(destPath);

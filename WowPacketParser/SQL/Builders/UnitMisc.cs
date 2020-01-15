@@ -396,11 +396,53 @@ namespace WowPacketParser.SQL.Builders
                     t => StoreGetters.GetName(StoreNameType.Unit, (int)t.ObjectEntry)); // BUG: GOs can send gossips too
 
             // `gossip_menu_option`
+            //if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+            //{
+            //    result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), t => t.BroadcastTextIDHelper);
+            //    result += SQLUtil.Compare(Storage.GossipMenuOptionActions, SQLDatabase.Get(Storage.GossipMenuOptionActions), StoreNameType.None);
+            //    result += SQLUtil.Compare(Storage.GossipMenuOptionBoxes, SQLDatabase.Get(Storage.GossipMenuOptionBoxes), t => t.BroadcastTextIdHelper);
+            //    result += SQLUtil.Compare(Storage.GossipMenuOptionTrainers, SQLDatabase.Get(Storage.GossipMenuOptionTrainers), StoreNameType.None);
+            //}
+
+            var gossipMenuOptions = new DataBag<GossipMenuOption>();
+            var gossipMenuOptionActions = new DataBag<GossipMenuOptionAction>();
+            var gossipMenuOptionBoxes = new DataBag<GossipMenuOptionBox>();
+            foreach (var gossipMenuOption in Storage.GossipMenuOptions)
+            {
+                var gossipMenuOptionTrainer = new GossipMenuOptionTrainer();
+                gossipMenuOptionTrainer.MenuId = gossipMenuOption.Item1.MenuId;
+                gossipMenuOptionTrainer.OptionIndex = gossipMenuOption.Item1.OptionIndex;
+
+                if (Storage.GossipMenuOptionTrainers.ContainsKey(gossipMenuOptionTrainer))
+                    gossipMenuOptions.Add(gossipMenuOption.Item1);
+            }
+
+            foreach (var gossipMenuOptionAction in Storage.GossipMenuOptionActions)
+            {
+                var gossipMenuOptionTrainer = new GossipMenuOptionTrainer();
+                gossipMenuOptionTrainer.MenuId = gossipMenuOptionAction.Item1.MenuId;
+                gossipMenuOptionTrainer.OptionIndex = gossipMenuOptionAction.Item1.OptionIndex;
+
+                if (Storage.GossipMenuOptionTrainers.ContainsKey(gossipMenuOptionTrainer))
+                    gossipMenuOptionActions.Add(gossipMenuOptionAction.Item1);
+            }
+
+            foreach (var gossipMenuOptionBox in Storage.GossipMenuOptionBoxes)
+            {
+                var gossipMenuOptionTrainer = new GossipMenuOptionTrainer();
+                gossipMenuOptionTrainer.MenuId = gossipMenuOptionBox.Item1.MenuId;
+                gossipMenuOptionTrainer.OptionIndex = gossipMenuOptionBox.Item1.OptionIndex;
+
+                if (Storage.GossipMenuOptionTrainers.ContainsKey(gossipMenuOptionTrainer))
+                    gossipMenuOptionBoxes.Add(gossipMenuOptionBox.Item1);
+            }
+
+            // `gossip_menu_option`
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
             {
-                result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), t => t.BroadcastTextIDHelper);
-                result += SQLUtil.Compare(Storage.GossipMenuOptionActions, SQLDatabase.Get(Storage.GossipMenuOptionActions), StoreNameType.None);
-                result += SQLUtil.Compare(Storage.GossipMenuOptionBoxes, SQLDatabase.Get(Storage.GossipMenuOptionBoxes), t => t.BroadcastTextIdHelper);
+                result += SQLUtil.Compare(gossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), t => t.BroadcastTextIDHelper);
+                result += SQLUtil.Compare(gossipMenuOptionActions, SQLDatabase.Get(Storage.GossipMenuOptionActions), StoreNameType.None);
+                result += SQLUtil.Compare(gossipMenuOptionBoxes, SQLDatabase.Get(Storage.GossipMenuOptionBoxes), t => t.BroadcastTextIdHelper);
                 result += SQLUtil.Compare(Storage.GossipMenuOptionTrainers, SQLDatabase.Get(Storage.GossipMenuOptionTrainers), StoreNameType.None);
             }
 

@@ -63,7 +63,7 @@ namespace WowPacketParser.Loading
                 {
                     _snifferId = _reader.ReadByte();            // sniffer id
                     SetBuild(_reader.ReadUInt16());             // client build
-                    _reader.ReadBytes(4);                       // client locale
+                    SetLocale(Encoding.ASCII.GetString(_reader.ReadBytes(4)));              // client locale
                     _reader.ReadBytes(20);                      // packet key
                     _reader.ReadBytes(64);                      // realm name
                     break;
@@ -72,7 +72,7 @@ namespace WowPacketParser.Loading
                 {
                     _snifferId = _reader.ReadByte();            // sniffer id
                     SetBuild(_reader.ReadUInt32());             // client build
-                    _reader.ReadBytes(4);                       // client locale
+                    SetLocale(Encoding.ASCII.GetString(_reader.ReadBytes(4)));              // client locale
                     _reader.ReadBytes(40);                      // session key
                     additionalLength = _reader.ReadInt32();
                     var preAdditionalPos = _reader.BaseStream.Position;

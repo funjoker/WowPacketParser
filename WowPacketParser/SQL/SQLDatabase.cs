@@ -94,6 +94,14 @@ namespace WowPacketParser.SQL
             string query =
                 "SELECT ID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, EmotesID, LanguageID, Flags, ConditionID, SoundEntriesID1, SoundEntriesID2 " +
                 $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
+
+            if (Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+            {
+                query =
+                "SELECT ID, MaleText, FemaleText, EmoteID0, EmoteID1, EmoteID2, EmoteDelay0, EmoteDelay1, EmoteDelay2, SoundId, Unk1, Unk2 " +
+                $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
+            }
+
             using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
@@ -101,9 +109,22 @@ namespace WowPacketParser.SQL
 
                 while (reader.Read())
                 {
-                    var id = Convert.ToInt32(reader["Id"]);
-                    var text = Convert.ToString(reader["Text"]);
-                    var text1 = Convert.ToString(reader["Text1"]);
+                    int id;
+                    string text;
+                    string text1;
+
+                    if (Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                    {
+                        id = Convert.ToInt32(reader["Id"]);
+                        text = Convert.ToString(reader["MaleText"]);
+                        text1 = Convert.ToString(reader["FemaleText"]);
+                    }
+                    else
+                    {
+                        id = Convert.ToInt32(reader["Id"]);
+                        text = Convert.ToString(reader["Text"]);
+                        text1 = Convert.ToString(reader["Text1"]);
+                    }
 
                     if (!BroadcastTexts.ContainsKey(text))
                         BroadcastTexts[text] = new List<int>();
@@ -122,21 +143,42 @@ namespace WowPacketParser.SQL
                         Text1 = text1,
 
                     };
-                    broadcastText.EmoteID = new ushort[3];
-                    broadcastText.EmoteID[0] = Convert.ToUInt16(reader["EmoteID1"]);
-                    broadcastText.EmoteID[1] = Convert.ToUInt16(reader["EmoteID2"]);
-                    broadcastText.EmoteID[2] = Convert.ToUInt16(reader["EmoteID3"]);
-                    broadcastText.EmoteDelay = new ushort[3];
-                    broadcastText.EmoteDelay[0] = Convert.ToUInt16(reader["EmoteDelay1"]);
-                    broadcastText.EmoteDelay[1] = Convert.ToUInt16(reader["EmoteDelay2"]);
-                    broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay3"]);
-                    broadcastText.EmotesID = Convert.ToUInt16(reader["EmotesID"]);
-                    broadcastText.LanguageID = Convert.ToByte(reader["LanguageID"]);
-                    broadcastText.Flags = Convert.ToByte(reader["Flags"]);
-                    broadcastText.ConditionID = Convert.ToUInt32(reader["ConditionID"]);
-                    broadcastText.SoundEntriesID = new uint[2];
-                    broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundEntriesID1"]);
-                    broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader["SoundEntriesID2"]);
+                    if (Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                    {
+                        broadcastText.EmoteID = new ushort[3];
+                        broadcastText.EmoteID[0] = Convert.ToUInt16(reader["EmoteID0"]);
+                        broadcastText.EmoteID[1] = Convert.ToUInt16(reader["EmoteID1"]);
+                        broadcastText.EmoteID[2] = Convert.ToUInt16(reader["EmoteID2"]);
+                        broadcastText.EmoteDelay = new ushort[3];
+                        broadcastText.EmoteDelay[0] = Convert.ToUInt16(reader["EmoteDelay0"]);
+                        broadcastText.EmoteDelay[1] = Convert.ToUInt16(reader["EmoteDelay1"]);
+                        broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay2"]);
+                        broadcastText.EmotesID = Convert.ToUInt16(reader["Unk1"]);
+                        broadcastText.LanguageID = 0;
+                        broadcastText.Flags = Convert.ToByte(reader["Unk2"]);
+                        broadcastText.ConditionID = 0;
+                        broadcastText.SoundEntriesID = new uint[2];
+                        broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundId"]);
+                        broadcastText.SoundEntriesID[1] = 0;
+                    }
+                    else
+                    {
+                        broadcastText.EmoteID = new ushort[3];
+                        broadcastText.EmoteID[0] = Convert.ToUInt16(reader["EmoteID1"]);
+                        broadcastText.EmoteID[1] = Convert.ToUInt16(reader["EmoteID2"]);
+                        broadcastText.EmoteID[2] = Convert.ToUInt16(reader["EmoteID3"]);
+                        broadcastText.EmoteDelay = new ushort[3];
+                        broadcastText.EmoteDelay[0] = Convert.ToUInt16(reader["EmoteDelay1"]);
+                        broadcastText.EmoteDelay[1] = Convert.ToUInt16(reader["EmoteDelay2"]);
+                        broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay3"]);
+                        broadcastText.EmotesID = Convert.ToUInt16(reader["EmotesID"]);
+                        broadcastText.LanguageID = Convert.ToByte(reader["LanguageID"]);
+                        broadcastText.Flags = Convert.ToByte(reader["Flags"]);
+                        broadcastText.ConditionID = Convert.ToUInt32(reader["ConditionID"]);
+                        broadcastText.SoundEntriesID = new uint[2];
+                        broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundEntriesID1"]);
+                        broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader["SoundEntriesID2"]);
+                    }
 
                     if (!DBC.DBC.BroadcastText.ContainsKey(id))
                         DBC.DBC.BroadcastText.TryAdd(id, broadcastText);
