@@ -1,17 +1,13 @@
-dist: trusty
-sudo: false
+dist: bionic
 
 language: csharp
 solution: WowPacketParser.sln
 
 matrix:
   include:
-    - dotnet: 1.0.1
+    - dotnet: 3.1
       mono: none
-      env: DOTNETCORE=1
-    - mono: latest
-  allow_failures:
-    - dotnet: 1.0.1
 
-install: ./scripts/travis-install.sh
-script: ./scripts/travis-build.sh
+script: 
+  - dotnet restore
+  - dotnet build
