@@ -716,7 +716,7 @@ namespace WowPacketParser.Misc
                 {
                     try
                     {
-                        var asm = Assembly.Load($"WowPacketParserModule.{tmpFallback}");
+                        var asm = Assembly.LoadFrom($"WowPacketParserModule.{tmpFallback}.dll");
                         Trace.WriteLine($"Loading module WowPacketParserModule.{tmpFallback}.dll (fallback)");
 
                         Handler.LoadHandlers(asm, tmpFallback);
@@ -729,7 +729,7 @@ namespace WowPacketParser.Misc
 
                 try
                 {
-                    var asm = Assembly.Load($"WowPacketParserModule.{VersionDefiningBuild}");
+                    var asm = Assembly.LoadFrom($"WowPacketParserModule.{VersionDefiningBuild}.dll");
                     Trace.WriteLine($"Loading module WowPacketParserModule.{VersionDefiningBuild}.dll");
 
                     HotfixStoreMgr.LoadStores(asm);
