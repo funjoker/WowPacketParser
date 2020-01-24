@@ -66,3 +66,26 @@ docker run -v /place/where/sniffs/are/kept:/usr/src/app/build/sniffs trinitycore
 */place/where/sniffs/are/kept* should your local directory containing the .pkt file and *sniffname.pkt* the file to be parsed.
 
 Output (.txt/.sql) of the parser will be added to */place/where/sniffs/are/kept*.
+
+
+Copyright & Third Party
+-----------------------
+##### WowPacketParser
+License: GPLv3
+
+Read file [COPYING](COPYING).
+
+##### Third Party 
+
+The third party libraries have their own way of addressing authorship, and the authorship of commits importing/ updating
+a third party library reflects who did the importing instead of who wrote the code within the commit.
+
+
+NuGet libraries:
+
+Copyright information of third party libraries provided through NuGet can be obtained by checking https://www.nuget.org/
+
+
+Provided third party libraries:
+
+DBFileReaderLib, 2019-2020 wowdev, located at https://github.com/wowdev/DBCD
