@@ -1,0 +1,31 @@
+name: Linux Build, Test and Distribute
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Build Release with dotnet
+      run: dotnet build --configuration Release
+    - name: Build Debug with dotnet
+      run: dotnet build --configuration Debug
+    - name: Test with dotnet
+      run: dotnet test -c Debug --no-build --no-restore WowPacketParser.Tests/WowPacketParser.Tests.csproj
+    - name: Upload Release artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+       name: Linux-Release
+       path: WowPacketParser/bin/Release
+    - name: Upload Debug artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+       name: Linux-Debug
+       path: WowPacketParser/bin/Debug
