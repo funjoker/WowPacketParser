@@ -11,7 +11,7 @@ WowPacketParser (WPP)
 Usage
 -----
 
-* Compile WowPacketParser using Visual Studio 2017 or higher (Windows + .NET Core SDK 3.1) or dotnet 3.1 (Linux/OSX).
+* Compile WowPacketParser using Visual Studio 2019 (with .NET Core SDK 3.1) or .NET Core SDK 3.1 (Linux/OSX).
   Alternatively you can download compiled binaries from the links [below](#nightly-builds).
 * Edit `WowPacketParser.exe.config` to fit your needs.
 * Drag one or more files (.pkt or .bin) to `WowPacketParser.exe`.
@@ -43,17 +43,21 @@ and `wpp_data_objectnames.sql` has some data to fill the database.
 
 Nightly Builds
 --------------
+.NET Core SDK 3.1 (3.1.100 or higher) or .NET Core Runtime 3.1 (3.1.100 or higher) is needed!
 
-##### .NET 4.5 (AnyCPU) by AppVeyor
+[Download .NET Core 3.1 here!](https://dotnet.microsoft.com/download/dotnet-core/3.1)
 
-- Visual Studio 2015
-  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202015;%20Configuration:%20Debug&branch=master)
-  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202015;%20Configuration:%20Release&branch=master)
-
-- Visual Studio 2017
-  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202017;%20Configuration:%20Debug&branch=master)
-  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202017;%20Configuration:%20Release&branch=master)
+##### Windows
+- Visual Studio 2019
+  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202019;%20Configuration:%20Debug&branch=master)
+  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202019;%20Configuration:%20Release&branch=master)
   
+##### Linux (Ubuntu)
+  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Ubuntu;%20Configuration:%20Debug&branch=master)
+  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Ubuntu;%20Configuration:%20Release&branch=master)
+  
+##### macOS (currently unsupported)
+
 Docker (experimental)
 ---------------------
 
@@ -81,11 +85,11 @@ The third party libraries have their own way of addressing authorship, and the a
 a third party library reflects who did the importing instead of who wrote the code within the commit.
 
 
-NuGet libraries:
+###### NuGet libraries:
 
 Copyright information of third party libraries provided through NuGet can be obtained by checking https://www.nuget.org/
 
 
-Provided third party libraries:
+###### Provided third party libraries:
 
 DBFileReaderLib, 2019-2020 wowdev, located at https://github.com/wowdev/DBCD
