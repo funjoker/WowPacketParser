@@ -90,6 +90,47 @@ namespace WowPacketParser.SQL.Builders
             return "TRUNCATE `hotfix_blob`;" + Environment.NewLine + new SQLInsert<HotfixBlob>(rows, false).Build();
         }
 
+        [BuilderMethod(true)]
+        public static string HotfixLegacy()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_legacy))
+                return string.Empty;
+
+            string sql = string.Empty;
+
+            if (!Storage.HotfixDatas434.IsEmpty())
+            {
+                var hotfixDataDb = SQLDatabase.Get(Storage.HotfixDatas434, Settings.HotfixesDatabase);
+                sql += SQLUtil.Compare(Storage.HotfixDatas434, hotfixDataDb, StoreNameType.None);
+            }
+
+            if (!Storage.ItemCurrencyCosts434.IsEmpty())
+            {
+                var itemCurrencyCostDb = SQLDatabase.Get(Storage.ItemCurrencyCosts434, Settings.HotfixesDatabase);
+                sql += SQLUtil.Compare(Storage.ItemCurrencyCosts434, itemCurrencyCostDb, StoreNameType.None);
+            }
+
+            if (!Storage.Items434.IsEmpty())
+            {
+                var itemDb = SQLDatabase.Get(Storage.Items434, Settings.HotfixesDatabase);
+                sql += SQLUtil.Compare(Storage.Items434, itemDb, StoreNameType.None);
+            }
+
+            if (!Storage.ItemExtendedCosts434.IsEmpty())
+            {
+                var itemExtendedCostDb = SQLDatabase.Get(Storage.ItemExtendedCosts434, Settings.HotfixesDatabase);
+                sql += SQLUtil.Compare(Storage.ItemExtendedCosts434, itemExtendedCostDb, StoreNameType.None);
+            }
+
+            if (!Storage.ItemSparses434.IsEmpty())
+            {
+                var itemSparseDb = SQLDatabase.Get(Storage.ItemSparses434, Settings.HotfixesDatabase);
+                sql += SQLUtil.Compare(Storage.ItemSparses434, itemSparseDb, StoreNameType.None);
+            }
+
+            return sql;
+        }
+
         // Special Hotfix Builders
         [BuilderMethod(true)]
         public static string BroadcastText()

@@ -53,7 +53,8 @@
         weather_updates,
 
         hotfix_data,
-        hotfix_blob
+        hotfix_blob,
+        hotfix_legacy
         // ReSharper restore InconsistentNaming
     }
 }

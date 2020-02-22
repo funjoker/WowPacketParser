@@ -123,6 +123,13 @@ namespace WowPacketParser.Store
         public static readonly DataBag<BroadcastText> BroadcastTexts = new DataBag<BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
         public static readonly DataBag<BroadcastTextLocale> BroadcastTextLocales = new DataBag<BroadcastTextLocale>(new List<SQLOutput> { SQLOutput.broadcast_text_locale });
 
+        // HotfixLegacy
+        public static readonly DataBag<HotfixData434> HotfixDatas434 = new DataBag<HotfixData434>(new List<SQLOutput> { SQLOutput.hotfix_legacy });
+        public static readonly DataBag<ItemCurrencyCost434> ItemCurrencyCosts434 = new DataBag<ItemCurrencyCost434>(new List<SQLOutput> { SQLOutput.hotfix_legacy });
+        public static readonly DataBag<Item434> Items434 = new DataBag<Item434>(new List<SQLOutput> { SQLOutput.hotfix_legacy });
+        public static readonly DataBag<ItemExtendedCost434> ItemExtendedCosts434 = new DataBag<ItemExtendedCost434>(new List<SQLOutput> { SQLOutput.hotfix_legacy });
+        public static readonly DataBag<ItemSparse434> ItemSparses434 = new DataBag<ItemSparse434>(new List<SQLOutput> { SQLOutput.hotfix_legacy });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
