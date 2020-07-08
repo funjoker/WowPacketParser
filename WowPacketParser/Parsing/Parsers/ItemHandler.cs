@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -650,7 +651,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleItemRequestHotfix434(Packet packet)
         {
-            packet.ReadUInt32("Type");
+            packet.ReadUInt32E<DB2Hash>("TableHash");
             var count = packet.ReadBits("Count", 23);
             var guidBytes = new byte[count][];
             for (var i = 0; i < count; ++i)
@@ -666,7 +667,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guidBytes[i], 3);
                 packet.ReadXORByte(guidBytes[i], 4);
 
-                packet.ReadUInt32<ItemId>("Entry", i);
+                packet.ReadUInt32("RecordID", i);
 
                 packet.ReadXORByte(guidBytes[i], 2);
 
@@ -677,7 +678,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleItemRequestHotfix422(Packet packet)
         {
-            packet.ReadUInt32("Type");
+            packet.ReadUInt32E<DB2Hash>("TableHash");
             var count = packet.ReadUInt32("Count");
             var guidBytes = new byte[count][];
             for (var i = 0; i < count; ++i)
@@ -685,7 +686,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadUInt32<ItemId>("Entry", i);
+                packet.ReadUInt32("RecordID", i);
                 guidBytes[i] = packet.ParseBitStream(guidBytes[i], 2, 6, 3, 0, 5, 7, 1, 4);
                 packet.WriteGuid("GUID", guidBytes[i], i);
             }
@@ -695,11 +696,11 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleItemRequestHotFix(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
-            packet.ReadUInt32("Type");
+            packet.ReadUInt32E<DB2Hash>("TableHash");
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadUInt32<ItemId>("Entry", i);
+                packet.ReadUInt32("RecordID", i);
                 packet.ReadUInt32("Unk UInt32 1", i);
                 packet.ReadUInt32("Unk UInt32 2", i);
             }
@@ -1014,173 +1015,230 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleDBReply434(Packet packet)
         {
-            var id = packet.ReadInt32("Entry");
-
-            var type = packet.ReadUInt32E<DB2Hash>("Hotfix DB2 File");
-            packet.ReadTime("Hotfix date");
+            var id = packet.ReadInt32("RecordID");        
+            var type = packet.ReadUInt32E<DB2Hash>("TableHash");
+            var timeStamp = packet.ReadUInt32();
+            packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
             var size = packet.ReadUInt32("Size");
-            if (size == 0)
-                return;
 
-            if (id < 0)
-                return;
-
-            var itemId = (uint)id;
-
-            switch (type)
+            if (id < 0 && size == 0)
             {
-                case DB2Hash.Item:
+                packet.WriteLine("Row {0} has been removed.", -id);
+            }
+            else
+            {
+                switch (type)
                 {
-                    ItemTemplate key = new ItemTemplate {Entry = itemId};
-                    ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();
-
-                    packet.ReadUInt32<ItemId>("Entry");
-                    item.Class = packet.ReadInt32E<ItemClass>("Class");
-                    item.SubClass = packet.ReadUInt32("Sub Class");
-                    item.SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass");
-                    item.Material = packet.ReadInt32E<Material>("Material");
-                    item.DisplayID = packet.ReadUInt32("Display ID");
-                    item.InventoryType = packet.ReadUInt32E<InventoryType>("Inventory Type");
-                    item.SheathType = packet.ReadInt32E<SheathType>("Sheath Type");
-
-                    Storage.ItemTemplates.Add(item, packet.TimeSpan);
-                    break;
-                }
-                case DB2Hash.ItemSparse:
-                {
-                    ItemTemplate key = new ItemTemplate { Entry = itemId };
-                    ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();
-
-                    packet.ReadUInt32<ItemId>("Entry");
-                    item.Quality = packet.ReadInt32E<ItemQuality>("Quality");
-                    item.Flags = packet.ReadUInt32E<ItemProtoFlags>("Flags 1");
-                    item.FlagsExtra = packet.ReadInt32E<ItemFlagExtra>("Flags 2");
-                    item.Unk430_1 = packet.ReadSingle("Unk430_1");
-                    item.Unk430_2 = packet.ReadSingle("Unk430_2");
-                    item.BuyCount = packet.ReadUInt32("Buy count");
-                    item.BuyPrice = packet.ReadUInt32("Buy Price");
-                    item.SellPrice = packet.ReadUInt32("Sell Price");
-                    item.InventoryType = packet.ReadInt32E<InventoryType>("Inventory Type");
-                    item.AllowedClasses = packet.ReadInt32E<ClassMask>("Allowed Classes");
-                    item.AllowedRaces = packet.ReadInt32E<RaceMask>("Allowed Races");
-                    item.ItemLevel = packet.ReadUInt32("Item Level");
-                    item.RequiredLevel = packet.ReadUInt32("Required Level");
-                    item.RequiredSkillId = packet.ReadUInt32("Required Skill ID");
-                    item.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level");
-                    item.RequiredSpell = (uint)packet.ReadInt32<SpellId>("Required Spell");
-                    item.RequiredHonorRank = packet.ReadUInt32("Required Honor Rank");
-                    item.RequiredCityRank = packet.ReadUInt32("Required City Rank");
-                    item.RequiredRepFaction = packet.ReadUInt32("Required Rep Faction");
-                    item.RequiredRepValue = packet.ReadUInt32("Required Rep Value");
-                    item.MaxCount = packet.ReadInt32("Max Count");
-                    item.MaxStackSize = packet.ReadInt32("Max Stack Size");
-                    item.ContainerSlots = packet.ReadUInt32("Container Slots");
-
-                    item.StatTypes = new ItemModType?[10];
-                    for (int i = 0; i < 10; i++)
+                    case DB2Hash.ItemCurrencyCost:
                     {
-                        ItemModType statType = packet.ReadInt32E<ItemModType>("Stat Type", i);
-                        item.StatTypes[i] = statType == ItemModType.None ? ItemModType.Mana : statType; // TDB
+                        ItemCurrencyCost434 itemCurrencyCost = new ItemCurrencyCost434();
+
+                        itemCurrencyCost.ID = packet.ReadUInt32("ID");
+                        itemCurrencyCost.ItemID = packet.ReadInt32<ItemId>("ItemID");
+
+                        Storage.ItemCurrencyCosts434.Add(itemCurrencyCost);
+                        break;
                     }
+                    case DB2Hash.Item:
+                    {
+                        Item434 item = new Item434();
 
-                    item.StatValues = new int?[10];
-                    for (int i = 0; i < 10; i++)
-                        item.StatValues[i] = packet.ReadInt32("Stat Value", i);
+                        item.ID = packet.ReadUInt32<ItemId>("ID");
+                        item.ClassID = packet.ReadInt32("Class");
+                        item.SubclassID = packet.ReadUInt32("SubClass");
+                        item.SoundOverrideSubclassID = packet.ReadInt32("SoundOverrideSubclass");
+                        item.Material = packet.ReadInt32("Material");
+                        item.DisplayInfoID = packet.ReadUInt32("DisplayInfoID");
+                        item.InventoryType = packet.ReadUInt32("InventoryType");
+                        item.SheatheType = packet.ReadInt32("Sheath");
 
-                    item.ScalingValue = new int?[10];
-                    for (int i = 0; i < 10; i++)
-                        item.ScalingValue[i] = packet.ReadInt32("Scaling Value", i);
+                        Storage.Items434.Add(item);
+                        break;
+                    }
+                    case DB2Hash.ItemExtendedCost:
+                    {
+                        ItemExtendedCost434 itemExtendedCost = new ItemExtendedCost434();
 
-                    item.SocketCostRate = new int?[10];
-                    for (int i = 0; i < 10; i++)
-                        item.SocketCostRate[i] = packet.ReadInt32("Socket Cost Rate", i);
+                        itemExtendedCost.ID = packet.ReadUInt32("ID");
+                        itemExtendedCost.RequiredHonorPoints = packet.ReadUInt32("RequiredHonorPoints");
+                        itemExtendedCost.RequiredArenaPoints = packet.ReadUInt32("RequiredArenaPoints");
+                        itemExtendedCost.RequiredArenaSlot = packet.ReadUInt32("RequiredArenaSlot");
 
-                    item.ScalingStatDistribution = packet.ReadInt32("Scaling Stat Distribution");
-                    item.DamageType = packet.ReadInt32E<DamageType>("Damage Type");
-                    item.Delay = packet.ReadUInt32("Delay");
-                    item.RangedMod = packet.ReadSingle("Ranged Mod");
+                        itemExtendedCost.RequiredItem = new uint?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemExtendedCost.RequiredItem[i] = packet.ReadUInt32("RequiredItem", i);
 
-                    item.TriggeredSpellIds = new int?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellIds[i] = packet.ReadInt32<SpellId>("Triggered Spell ID", i);
+                        itemExtendedCost.RequiredItemCount = new uint?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemExtendedCost.RequiredItemCount[i] = packet.ReadUInt32("RequiredItemCount", i);
+                        
+                        itemExtendedCost.RequiredPersonalArenaRating = packet.ReadUInt32("RequiredPersonalArenaRating");
+                        itemExtendedCost.ItemPurchaseGroup = packet.ReadUInt32("ItemPurchaseGroup");
 
-                    item.TriggeredSpellTypes = new ItemSpellTriggerType?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellTypes[i] = packet.ReadInt32E<ItemSpellTriggerType>("Trigger Spell Type", i);
+                        itemExtendedCost.RequiredCurrency = new uint?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemExtendedCost.RequiredCurrency[i] = packet.ReadUInt32("RequiredCurrency", i);
 
-                    item.TriggeredSpellCharges = new int?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellCharges[i] = packet.ReadInt32("Triggered Spell Charges", i);
+                        itemExtendedCost.RequiredCurrencyCount = new uint?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemExtendedCost.RequiredCurrencyCount[i] = packet.ReadUInt32("RequiredCurrencyCount", i);
 
-                    item.TriggeredSpellCooldowns = new int?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellCooldowns[i] = packet.ReadInt32("Triggered Spell Cooldown", i);
+                        itemExtendedCost.RequiredFactionId = packet.ReadUInt32("RequiredFactionId");
+                        itemExtendedCost.RequiredFactionStanding = packet.ReadUInt32("RequiredFactionStanding");
+                        itemExtendedCost.RequirementFlags = packet.ReadUInt32("RequirementFlags");
+                        itemExtendedCost.RequiredAchievement = packet.ReadUInt32("RequiredAchievement");
 
-                    item.TriggeredSpellCategories = new uint?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellCategories[i] = packet.ReadUInt32("Triggered Spell Category", i);
+                        Storage.ItemExtendedCosts434.Add(itemExtendedCost);
+                        break;
+                    }
+                    case DB2Hash.ItemSparse:
+                    {
+                        ItemSparse434 itemSparse = new ItemSparse434();
 
-                    item.TriggeredSpellCategoryCooldowns = new int?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellCategoryCooldowns[i] = packet.ReadInt32("Triggered Spell Category Cooldown", i);
+                        itemSparse.ID = packet.ReadUInt32<ItemId>("ID");
+                        itemSparse.Quality = packet.ReadInt32("Quality");
 
-                    item.Bonding = packet.ReadInt32E<ItemBonding>("Bonding");
+                        itemSparse.Flags = new uint?[2];
+                        for (int i = 0; i < 2; i++)
+                            itemSparse.Flags[i] = packet.ReadUInt32("Flags", i);
 
-                    if (packet.ReadUInt16() > 0)
-                        item.Name = packet.ReadCString("Name", 0);
+                        itemSparse.PriceRandomValue = packet.ReadSingle("PriceRandomValue");
+                        itemSparse.PriceVariance = packet.ReadSingle("PriceVariance");
+                        itemSparse.BuyCount = packet.ReadUInt32("BuyCount");
+                        itemSparse.BuyPrice = packet.ReadUInt32("BuyPrice");
+                        itemSparse.SellPrice = packet.ReadUInt32("SellPrice");
+                        itemSparse.InventoryType = packet.ReadInt32("InventoryType");
+                        itemSparse.AllowableClass = packet.ReadInt32("AllowableClass");
+                        itemSparse.AllowableRace = packet.ReadInt32("AllowableRace");
+                        itemSparse.ItemLevel = packet.ReadUInt32("ItemLevel");
+                        itemSparse.RequiredLevel = packet.ReadUInt32("RequiredLevel");
+                        itemSparse.RequiredSkill = packet.ReadUInt32("RequiredSkill");
+                        itemSparse.RequiredSkillRank = packet.ReadUInt32("RequiredSkillRank");
+                        itemSparse.RequiredSpell = packet.ReadInt32<SpellId>("RequiredSpell");
+                        itemSparse.RequiredHonorRank = packet.ReadUInt32("RequiredHonorRank");
+                        itemSparse.RequiredCityRank = packet.ReadUInt32("RequiredCityRank");
+                        itemSparse.RequiredReputationFaction = packet.ReadUInt32("RequiredReputationFaction");
+                        itemSparse.RequiredReputationRank = packet.ReadUInt32("RequiredReputationRank");
+                        itemSparse.MaxCount = packet.ReadInt32("MaxCount");
+                        itemSparse.Stackable = packet.ReadInt32("Stackable");
+                        itemSparse.ContainerSlots = packet.ReadUInt32("ContainerSlots");
 
-                    for (int i = 1; i < 4; ++i)
+                        itemSparse.ItemStatType = new int?[10];
+                        for (int i = 0; i < 10; i++)
+                            itemSparse.ItemStatType[i] = packet.ReadInt32("ItemStatType", i);
+
+                        itemSparse.ItemStatValue = new int?[10];
+                        for (int i = 0; i < 10; i++)
+                            itemSparse.ItemStatValue[i] = packet.ReadInt32("ItemStatValue", i);
+
+                        itemSparse.ItemStatAllocation = new int?[10];
+                        for (int i = 0; i < 10; i++)
+                            itemSparse.ItemStatAllocation[i] = packet.ReadInt32("ItemStatAllocation", i);
+
+                        itemSparse.ItemStatSocketCostMultiplier = new int?[10];
+                        for (int i = 0; i < 10; i++)
+                            itemSparse.ItemStatSocketCostMultiplier[i] = packet.ReadInt32("ItemStatSocketCostMultiplier", i);
+
+                        itemSparse.ScalingStatDistribution = packet.ReadInt32("ScalingStatDistribution");
+                        itemSparse.DamageType = packet.ReadInt32("DamageType");
+                        itemSparse.Delay = packet.ReadUInt32("Delay");
+                        itemSparse.RangedModRange = packet.ReadSingle("RangedModRange");
+
+                        itemSparse.SpellID = new int?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemSparse.SpellID[i] = packet.ReadInt32<SpellId>("SpellID", i);
+
+                        itemSparse.SpellTrigger = new int?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemSparse.SpellTrigger[i] = packet.ReadInt32("SpellTrigger", i);
+
+                        itemSparse.SpellCharges = new int?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemSparse.SpellCharges[i] = packet.ReadInt32("SpellCharges", i);
+
+                        itemSparse.SpellCooldown = new int?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemSparse.SpellCooldown[i] = packet.ReadInt32("SpellCooldown", i);
+
+                        itemSparse.SpellCategory = new uint?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemSparse.SpellCategory[i] = packet.ReadUInt32("SpellCategory", i);
+
+                        itemSparse.SpellCategoryCooldown = new int?[5];
+                        for (int i = 0; i < 5; i++)
+                            itemSparse.SpellCategoryCooldown[i] = packet.ReadInt32("SpellCategoryCooldown", i);
+
+                        itemSparse.Bonding = packet.ReadInt32("Bonding");
+
                         if (packet.ReadUInt16() > 0)
-                            packet.ReadCString("Name", i);
+                            itemSparse.Display = packet.ReadCString("Display");
+                        else
+                            itemSparse.Display = string.Empty;
 
-                    if (packet.ReadUInt16() > 0)
-                        item.Description = packet.ReadCString("Description");
+                        if (packet.ReadUInt16() > 0)
+                            itemSparse.Display1 = packet.ReadCString("Display1");
+                        else
+                            itemSparse.Display1 = string.Empty;
 
-                    item.PageText = packet.ReadUInt32("Page Text");
-                    item.Language = packet.ReadInt32E<Language>("Language");
-                    item.PageMaterial = packet.ReadInt32E<PageMaterial>("Page Material");
-                    item.StartQuestId = (uint)packet.ReadInt32<QuestId>("Start Quest");
-                    item.LockId = packet.ReadUInt32("Lock ID");
-                    item.Material = packet.ReadInt32E<Material>("Material");
-                    item.SheathType = packet.ReadInt32E<SheathType>("Sheath Type");
-                    item.RandomPropery = packet.ReadInt32("Random Property");
-                    item.RandomSuffix = packet.ReadUInt32("Random Suffix");
-                    item.ItemSet = packet.ReadUInt32("Item Set");
-                    item.AreaID = packet.ReadUInt32<AreaId>("Area");
-                    item.MapID = packet.ReadInt32("Map ID");
-                    item.BagFamily = packet.ReadInt32E<BagFamilyMask>("Bag Family");
-                    item.TotemCategory = packet.ReadInt32E<TotemCategory>("Totem Category");
+                        if (packet.ReadUInt16() > 0)
+                            itemSparse.Display2 = packet.ReadCString("Display2");
+                        else
+                            itemSparse.Display2 = string.Empty;
 
-                    item.ItemSocketColors = new ItemSocketColor?[3];
-                    for (int i = 0; i < 3; i++)
-                        item.ItemSocketColors[i] = packet.ReadInt32E<ItemSocketColor>("Socket Color", i);
+                        if (packet.ReadUInt16() > 0)
+                            itemSparse.Display3 = packet.ReadCString("Display3");
+                        else
+                            itemSparse.Display3 = string.Empty;
 
-                    item.SocketContent = new uint?[3];
-                    for (int i = 0; i < 3; i++)
-                        item.SocketContent[i] = packet.ReadUInt32("Socket Item", i);
+                        if (packet.ReadUInt16() > 0)
+                            itemSparse.Description = packet.ReadCString("Description");
+                        else
+                            itemSparse.Description = string.Empty;
 
-                    item.SocketBonus = packet.ReadInt32("Socket Bonus");
-                    item.GemProperties = packet.ReadInt32("Gem Properties");
-                    item.ArmorDamageModifier = packet.ReadSingle("Armor Damage Modifier");
-                    item.Duration = packet.ReadUInt32("Duration");
-                    item.ItemLimitCategory = packet.ReadInt32("Limit Category");
-                    item.HolidayID = packet.ReadInt32E<Holiday>("Holiday");
-                    item.StatScalingFactor = packet.ReadSingle("Stat Scaling Factor");
-                    item.CurrencySubstitutionID = packet.ReadUInt32("Currency Substitution Id");
-                    item.CurrencySubstitutionCount = packet.ReadUInt32("Currency Substitution Count");
+                        itemSparse.PageText = packet.ReadUInt32("PageText");
+                        itemSparse.LanguageID = packet.ReadInt32("LanguageID");
+                        itemSparse.PageMaterial = packet.ReadInt32("PageMaterial");
+                        itemSparse.StartQuest = packet.ReadInt32<QuestId>("StartQuest");
+                        itemSparse.LockID = packet.ReadUInt32("LockID");
+                        itemSparse.Material = packet.ReadInt32("Material");
+                        itemSparse.SheatheType = packet.ReadInt32("SheatheType");
+                        itemSparse.RandomProperty = packet.ReadInt32("RandomProperty");
+                        itemSparse.RandomSuffix = packet.ReadUInt32("RandomSuffix");
+                        itemSparse.ItemSet = packet.ReadUInt32("ItemSet");
+                        itemSparse.AreaID = packet.ReadUInt32<AreaId>("AreaID");
+                        itemSparse.MapID = packet.ReadInt32("MapID");
+                        itemSparse.BagFamily = packet.ReadInt32("BagFamily");
+                        itemSparse.TotemCategory = packet.ReadInt32("TotemCategory");
 
-                    Storage.ObjectNames.Add(new ObjectName { ObjectType = StoreNameType.Item, ID = (int)itemId, Name = item.Name }, packet.TimeSpan);
-                    break;
-                }
-                case DB2Hash.KeyChain:
-                {
-                    packet.ReadUInt32("Key Chain Id");
-                    packet.ReadBytes("Key", 32);
-                    break;
+                        itemSparse.SocketColor = new int?[3];
+                        for (int i = 0; i < 3; i++)
+                            itemSparse.SocketColor[i] = packet.ReadInt32("SocketColor", i);
+
+                        itemSparse.Content = new uint?[3];
+                        for (int i = 0; i < 3; i++)
+                            itemSparse.Content[i] = packet.ReadUInt32("Content", i);
+
+                        itemSparse.SocketBonus = packet.ReadInt32("SocketBonus");
+                        itemSparse.GemProperties = packet.ReadInt32("GemProperties");
+                        itemSparse.ArmorDamageModifier = packet.ReadSingle("ArmorDamageModifier");
+                        itemSparse.Duration = packet.ReadUInt32("Duration");
+                        itemSparse.ItemLimitCategory = packet.ReadInt32("ItemLimitCategory");
+                        itemSparse.HolidayID = packet.ReadInt32("HolidayID");
+                        itemSparse.StatScalingFactor = packet.ReadSingle("StatScalingFactor");
+                        itemSparse.CurrencySubstitutionID = packet.ReadUInt32("CurrencySubstitutionID");
+                        itemSparse.CurrencySubstitutionCount = packet.ReadUInt32("CurrencySubstitutionCount");
+
+                        Storage.ItemSparses434.Add(itemSparse);
+                        break;
+                    }
+                    case DB2Hash.KeyChain:
+                    {
+                        packet.ReadUInt32("KeyChainID");
+                        packet.ReadBytes("Key", 32);
+                        break;
+                    }
                 }
             }
-
-            packet.AddSniffData(StoreNameType.Item, (int)itemId, "DB_REPLY");
         }
 
         [Parser(Opcode.SMSG_SOCKET_GEMS)]

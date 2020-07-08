@@ -41,9 +41,15 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < count; ++i)
             {
-                packet.ReadUInt32E<DB2Hash>("Hotfix DB2 File", i);
-                packet.ReadTime("Hotfix date", i);
-                packet.ReadInt32("Hotfixed entry", i);
+                HotfixData434 hotfixData = new HotfixData434();
+
+                hotfixData.TableHash = packet.ReadUInt32E<DB2Hash>("TableHash", i);
+                var timeStamp = packet.ReadUInt32();
+                packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
+                hotfixData.Timestamp = timeStamp;
+                hotfixData.RecordID = packet.ReadInt32("RecordID", i);
+
+                Storage.HotfixDatas434.Add(hotfixData);
             }
         }
 
