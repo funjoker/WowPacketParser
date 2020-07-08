@@ -1015,7 +1015,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DB_REPLY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleDBReply434(Packet packet)
         {
-            var id = packet.ReadInt32("RecordID");        
+            var id = packet.ReadInt32("RecordID");
             var type = packet.ReadUInt32E<DB2Hash>("TableHash");
             var timeStamp = packet.ReadUInt32();
             packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
