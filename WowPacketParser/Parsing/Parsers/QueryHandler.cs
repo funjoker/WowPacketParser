@@ -243,12 +243,12 @@ namespace WowPacketParser.Parsing.Parsers
                 ID = (uint)entry.Key
             };
 
-            npcText.Probabilities = new float[8];
+            npcText.Probabilities = new float?[] { 0, 0, 0, 0, 0, 0, 0, 0 };
             npcText.Texts1 = new string[8];
             npcText.Texts2 = new string[8];
-            npcText.Languages = new Language[8];
-            npcText.EmoteDelays = new uint[8][];
-            npcText.EmoteIds = new EmoteType[8][];
+            npcText.Languages = new Language?[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+            npcText.EmoteDelays = new uint?[8][];
+            npcText.EmoteIds = new EmoteType?[8][];
             for (int i = 0; i < 8; i++)
             {
                 npcText.Probabilities[i] = packet.ReadSingle("Probability", i);
@@ -259,8 +259,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 npcText.Languages[i] = packet.ReadInt32E<Language>("Language", i);
 
-                npcText.EmoteDelays[i] = new uint[3];
-                npcText.EmoteIds[i] = new EmoteType[3];
+                npcText.EmoteDelays[i] = new uint?[3];
+                npcText.EmoteIds[i] = new EmoteType?[3];
                 for (int j = 0; j < 3; j++)
                 {
                     npcText.EmoteDelays[i][j] = packet.ReadUInt32("Emote Delay", i, j);
