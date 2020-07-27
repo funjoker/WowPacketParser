@@ -335,9 +335,9 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.Trainers.Add(trainer, packet.TimeSpan);
 
             if (LastGossipOption.HasSelection)
-                Storage.GossipMenuOptionTrainers.Add(new GossipMenuOptionTrainer { MenuId = LastGossipOption.MenuId, OptionIndex = LastGossipOption.OptionIndex, TrainerId = trainer.Id }, packet.TimeSpan);
+                Storage.CreatureDefaultTrainers.Add(new CreatureDefaultTrainer { CreatureId = LastGossipOption.Guid.GetEntry(), MenuID = LastGossipOption.MenuId, OptionIndex = LastGossipOption.OptionIndex, TrainerId = trainer.Id }, packet.TimeSpan);
             else
-                Storage.CreatureDefaultTrainers.Add(new CreatureDefaultTrainer { CreatureId = LastGossipOption.Guid.GetEntry(), TrainerId = trainer.Id }, packet.TimeSpan);
+                Storage.CreatureDefaultTrainers.Add(new CreatureDefaultTrainer { CreatureId = LastGossipOption.Guid.GetEntry(), MenuID = 0, OptionIndex = 0, TrainerId = trainer.Id }, packet.TimeSpan);
 
             LastGossipOption.ActionMenuId = null;
             LastGossipOption.ActionPoiId = null;
