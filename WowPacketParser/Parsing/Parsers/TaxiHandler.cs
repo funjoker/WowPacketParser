@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -33,15 +34,19 @@ namespace WowPacketParser.Parsing.Parsers
             while (packet.CanRead())
                 packet.ReadUInt64("NodeMask", i++);
 
+            NpcHandler.LastGossipOption.Guid = null;
             NpcHandler.LastGossipOption.ActionMenuId = null;
             NpcHandler.LastGossipOption.ActionPoiId = null;
             NpcHandler.LastGossipOption.MenuId = null;
             NpcHandler.LastGossipOption.OptionIndex = null;
+            NpcHandler.LastGossipOption.TimeSpan = TimeSpan.Zero;
 
+            NpcHandler.TempGossipOptionPOI.Guid = null;
             NpcHandler.TempGossipOptionPOI.MenuId = null;
             NpcHandler.TempGossipOptionPOI.OptionIndex = null;
             NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
             NpcHandler.TempGossipOptionPOI.ActionPoiId = null;
+            NpcHandler.TempGossipOptionPOI.TimeSpan = TimeSpan.Zero;
         }
 
         [Parser(Opcode.SMSG_SHOW_TAXI_NODES, ClientVersionBuild.V4_3_4_15595)]
@@ -58,15 +63,19 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < count; ++i)
                 packet.ReadByte("NodeMask", i);
 
+            NpcHandler.LastGossipOption.Guid = null;
             NpcHandler.LastGossipOption.ActionMenuId = null;
             NpcHandler.LastGossipOption.ActionPoiId = null;
             NpcHandler.LastGossipOption.MenuId = null;
             NpcHandler.LastGossipOption.OptionIndex = null;
+            NpcHandler.LastGossipOption.TimeSpan = TimeSpan.Zero;
 
+            NpcHandler.TempGossipOptionPOI.Guid = null;
             NpcHandler.TempGossipOptionPOI.MenuId = null;
             NpcHandler.TempGossipOptionPOI.OptionIndex = null;
             NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
             NpcHandler.TempGossipOptionPOI.ActionPoiId = null;
+            NpcHandler.TempGossipOptionPOI.TimeSpan = TimeSpan.Zero;
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI)]
