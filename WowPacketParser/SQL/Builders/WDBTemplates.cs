@@ -294,273 +294,196 @@ namespace WowPacketParser.SQL.Builders
                 Settings.TargetedDatabase == TargetedDatabase.Cataclysm))
             {
                 foreach (var npcText in Storage.NpcTexts)
-                {
                     npcText.Item1.ConvertToDBStruct();
 
-                    if (npcText.Item1.Text00 != string.Empty)
-                    {
-                        List<int> textList0;
-                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text00, out textList0))
-                        {
-                            if (textList0.Count == 1)
-                                npcText.Item1.BroadcastTextID0 = (uint)textList0.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID0 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID0 += string.Join(" - ", textList0);
-                            }
-
-                        }
-                    }
-                    else if (npcText.Item1.Text01 != string.Empty)
-                    {
-                        List<int> textList0;
-                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text01, out textList0))
-                        {
-                            if (textList0.Count == 1)
-                                npcText.Item1.BroadcastTextID0 = (uint)textList0.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID0 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID0 += string.Join(" - ", textList0);
-                            }
-
-                        }
-                    }
-
-                    if (npcText.Item1.Text10 != string.Empty)
-                    {
-                        List<int> textList1;
-                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text10, out textList1))
-                        {
-                            if (textList1.Count == 1)
-                                npcText.Item1.BroadcastTextID1 = (uint)textList1.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID1 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID1 += string.Join(" - ", textList1);
-                            }
-
-                        }
-                    }
-                    else if (npcText.Item1.Text11 != string.Empty)
-                    {
-                        List<int> textList1;
-                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text11, out textList1))
-                        {
-                            if (textList1.Count == 1)
-                                npcText.Item1.BroadcastTextID1 = (uint)textList1.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID1 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID1 += string.Join(" - ", textList1);
-                            }
-
-                        }
-                    }
-
-                    if (npcText.Item1.Text20 != string.Empty)
-                    {
-                        List<int> textList2;
-                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text20, out textList2))
-                        {
-                            if (textList2.Count == 1)
-                                npcText.Item1.BroadcastTextID2 = (uint)textList2.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID2 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID2 += string.Join(" - ", textList2);
-                            }
-
-                        }
-                    }
-                    else if (npcText.Item1.Text21 != string.Empty)
-                    {
-                        List<int> textList2;
-                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text21, out textList2))
-                        {
-                            if (textList2.Count == 1)
-                                npcText.Item1.BroadcastTextID2 = (uint)textList2.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID2 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID2 += string.Join(" - ", textList2);
-                            }
-
-                        }
-                    }
-
-                    if (npcText.Item1.Text30 != string.Empty)
-                    {
-                        List<int> textList3;
-                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text30, out textList3))
-                        {
-                            if (textList3.Count == 1)
-                                npcText.Item1.BroadcastTextID3 = (uint)textList3.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID3 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID3 += string.Join(" - ", textList3);
-                            }
-
-                        }
-                    }
-                    else if (npcText.Item1.Text31 != string.Empty)
-                    {
-                        List<int> textList3;
-                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text31, out textList3))
-                        {
-                            if (textList3.Count == 1)
-                                npcText.Item1.BroadcastTextID3 = (uint)textList3.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID3 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID3 += string.Join(" - ", textList3);
-                            }
-
-                        }
-                    }
-
-                    if (npcText.Item1.Text40 != string.Empty)
-                    {
-                        List<int> textList4;
-                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text40, out textList4))
-                        {
-                            if (textList4.Count == 1)
-                                npcText.Item1.BroadcastTextID4 = (uint)textList4.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID4 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID4 += string.Join(" - ", textList4);
-                            }
-
-                        }
-                    }
-                    else if (npcText.Item1.Text41 != string.Empty)
-                    {
-                        List<int> textList4;
-                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text41, out textList4))
-                        {
-                            if (textList4.Count == 1)
-                                npcText.Item1.BroadcastTextID4 = (uint)textList4.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID4 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID4 += string.Join(" - ", textList4);
-                            }
-
-                        }
-                    }
-
-                    if (npcText.Item1.Text50 != string.Empty)
-                    {
-                        List<int> textList5;
-                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text50, out textList5))
-                        {
-                            if (textList5.Count == 1)
-                                npcText.Item1.BroadcastTextID5 = (uint)textList5.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID5 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID5 += string.Join(" - ", textList5);
-                            }
-
-                        }
-                    }
-                    else if (npcText.Item1.Text51 != string.Empty)
-                    {
-                        List<int> textList5;
-                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text51, out textList5))
-                        {
-                            if (textList5.Count == 1)
-                                npcText.Item1.BroadcastTextID5 = (uint)textList5.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID5 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID5 += string.Join(" - ", textList5);
-                            }
-
-                        }
-                    }
-
-                    if (npcText.Item1.Text60 != string.Empty)
-                    {
-                        List<int> textList6;
-                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text60, out textList6))
-                        {
-                            if (textList6.Count == 1)
-                                npcText.Item1.BroadcastTextID6 = (uint)textList6.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID6 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID6 += string.Join(" - ", textList6);
-                            }
-
-                        }
-                    }
-                    else if (npcText.Item1.Text61 != string.Empty)
-                    {
-                        List<int> textList6;
-                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text61, out textList6))
-                        {
-                            if (textList6.Count == 1)
-                                npcText.Item1.BroadcastTextID6 = (uint)textList6.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID6 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID6 += string.Join(" - ", textList6);
-                            }
-
-                        }
-                    }
-
-                    if (npcText.Item1.Text70 != string.Empty)
-                    {
-                        List<int> textList7;
-                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text70, out textList7))
-                        {
-                            if (textList7.Count == 1)
-                                npcText.Item1.BroadcastTextID7 = (uint)textList7.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID7 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID7 += string.Join(" - ", textList7);
-                            }
-
-                        }
-                    }
-                    else if (npcText.Item1.Text71 != string.Empty)
-                    {
-                        List<int> textList7;
-                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text71, out textList7))
-                        {
-                            if (textList7.Count == 1)
-                                npcText.Item1.BroadcastTextID7 = (uint)textList7.First();
-                            else
-                            {
-                                npcText.Item1.BroadcastTextID7 = "BroadcastTextID: ";
-                                npcText.Item1.BroadcastTextID7 += string.Join(" - ", textList7);
-                            }
-
-                        }
-                    }
-
-                    var templatesDb = SQLDatabase.Get(Storage.NpcTexts);
-
-                    return SQLUtil.Compare(Storage.NpcTexts, templatesDb, StoreNameType.NpcText);
-                }
-
-                if (!Storage.NpcTextsMop.IsEmpty() && Settings.TargetedDatabase >= TargetedDatabase.WarlordsOfDraenor)
+                foreach (var npcText in Storage.NpcTexts)
                 {
-                    foreach (var npcText in Storage.NpcTextsMop)
-                        npcText.Item1.ConvertToDBStruct();
+                    List<int> optionTextList0;
+                    List<int> optionTextList1;
+                    List<int> optionTextList2;
+                    List<int> optionTextList3;
+                    List<int> optionTextList4;
+                    List<int> optionTextList5;
+                    List<int> optionTextList6;
+                    List<int> optionTextList7;
 
-                    var templatesDb = SQLDatabase.Get(Storage.NpcTextsMop);
+                    if (npcText.Item1.Text00 == string.Empty && npcText.Item1.Text01 == string.Empty)
+                        npcText.Item1.BroadcastTextID0 = 0;
 
-                    return SQLUtil.Compare(Storage.NpcTextsMop, templatesDb, StoreNameType.NpcText);
+                    if (npcText.Item1.Text00 != string.Empty && npcText.Item1.Text01 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text00, out optionTextList0))
+                        {
+                            if (optionTextList0.Count == 1)
+                                npcText.Item1.BroadcastTextID0 = (uint)optionTextList0.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text01 != string.Empty && npcText.Item1.Text00 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text01, out optionTextList0))
+                        {
+                            if (optionTextList0.Count == 1)
+                                npcText.Item1.BroadcastTextID0 = (uint)optionTextList0.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text10 == string.Empty && npcText.Item1.Text11 == string.Empty)
+                        npcText.Item1.BroadcastTextID1 = 0;
+
+                    if (npcText.Item1.Text10 != string.Empty && npcText.Item1.Text11 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text10, out optionTextList1))
+                        {
+                            if (optionTextList1.Count == 1)
+                                npcText.Item1.BroadcastTextID1 = (uint)optionTextList1.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text11 != string.Empty && npcText.Item1.Text10 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text11, out optionTextList1))
+                        {
+                            if (optionTextList1.Count == 1)
+                                npcText.Item1.BroadcastTextID1 = (uint)optionTextList1.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text20 == string.Empty && npcText.Item1.Text21 == string.Empty)
+                        npcText.Item1.BroadcastTextID2 = 0;
+
+                    if (npcText.Item1.Text20 != string.Empty && npcText.Item1.Text21 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text20, out optionTextList2))
+                        {
+                            if (optionTextList2.Count == 1)
+                                npcText.Item1.BroadcastTextID2 = (uint)optionTextList2.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text21 != string.Empty && npcText.Item1.Text20 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text21, out optionTextList2))
+                        {
+                            if (optionTextList2.Count == 1)
+                                npcText.Item1.BroadcastTextID2 = (uint)optionTextList2.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text30 == string.Empty && npcText.Item1.Text31 == string.Empty)
+                        npcText.Item1.BroadcastTextID3 = 0;
+
+                    if (npcText.Item1.Text30 != string.Empty && npcText.Item1.Text31 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text30, out optionTextList3))
+                        {
+                            if (optionTextList3.Count == 1)
+                                npcText.Item1.BroadcastTextID3 = (uint)optionTextList3.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text31 != string.Empty && npcText.Item1.Text30 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text31, out optionTextList3))
+                        {
+                            if (optionTextList3.Count == 1)
+                                npcText.Item1.BroadcastTextID3 = (uint)optionTextList3.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text40 == string.Empty && npcText.Item1.Text41 == string.Empty)
+                        npcText.Item1.BroadcastTextID4 = 0;
+
+                    if (npcText.Item1.Text40 != string.Empty && npcText.Item1.Text41 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text40, out optionTextList4))
+                        {
+                            if (optionTextList4.Count == 1)
+                                npcText.Item1.BroadcastTextID4 = (uint)optionTextList4.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text41 != string.Empty && npcText.Item1.Text40 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text41, out optionTextList4))
+                        {
+                            if (optionTextList4.Count == 1)
+                                npcText.Item1.BroadcastTextID4 = (uint)optionTextList4.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text50 == string.Empty && npcText.Item1.Text51 == string.Empty)
+                        npcText.Item1.BroadcastTextID5 = 0;
+
+                    if (npcText.Item1.Text50 != string.Empty && npcText.Item1.Text51 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text50, out optionTextList5))
+                        {
+                            if (optionTextList5.Count == 1)
+                                npcText.Item1.BroadcastTextID5 = (uint)optionTextList5.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text51 != string.Empty && npcText.Item1.Text50 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text51, out optionTextList5))
+                        {
+                            if (optionTextList5.Count == 1)
+                                npcText.Item1.BroadcastTextID5 = (uint)optionTextList5.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text60 == string.Empty && npcText.Item1.Text61 == string.Empty)
+                        npcText.Item1.BroadcastTextID6 = 0;
+
+                    if (npcText.Item1.Text60 != string.Empty && npcText.Item1.Text61 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text60, out optionTextList6))
+                        {
+                            if (optionTextList6.Count == 1)
+                                npcText.Item1.BroadcastTextID6 = (uint)optionTextList6.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text61 != string.Empty && npcText.Item1.Text60 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text61, out optionTextList6))
+                        {
+                            if (optionTextList6.Count == 1)
+                                npcText.Item1.BroadcastTextID6 = (uint)optionTextList6.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text70 == string.Empty && npcText.Item1.Text71 == string.Empty)
+                        npcText.Item1.BroadcastTextID7 = 0;
+
+                    if (npcText.Item1.Text70 != string.Empty && npcText.Item1.Text71 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text70, out optionTextList7))
+                        {
+                            if (optionTextList7.Count == 1)
+                                npcText.Item1.BroadcastTextID7 = (uint)optionTextList7.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text71 != string.Empty && npcText.Item1.Text70 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text71, out optionTextList7))
+                        {
+                            if (optionTextList7.Count == 1)
+                                npcText.Item1.BroadcastTextID7 = (uint)optionTextList7.First();
+                        }
+                    }
                 }
+                
+                var templatesDb = SQLDatabase.Get(Storage.NpcTexts);
+                
+                return SQLUtil.Compare(Storage.NpcTexts, templatesDb, StoreNameType.NpcText);
             }
-                return string.Empty;
+            
+            if (!Storage.NpcTextsMop.IsEmpty() && Settings.TargetedDatabase >= TargetedDatabase.WarlordsOfDraenor)
+            {
+                foreach (var npcText in Storage.NpcTextsMop)
+                    npcText.Item1.ConvertToDBStruct();
+                
+                var templatesDb = SQLDatabase.Get(Storage.NpcTextsMop);
+                
+                return SQLUtil.Compare(Storage.NpcTextsMop, templatesDb, StoreNameType.NpcText);
+            }
+
+            return string.Empty;
         }
 
         [BuilderMethod(true)]

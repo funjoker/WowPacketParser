@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -243,28 +246,26 @@ namespace WowPacketParser.Parsing.Parsers
                 ID = (uint)entry.Key
             };
 
-            npcText.Probabilities = new float?[] { 0, 0, 0, 0, 0, 0, 0, 0 };
-            npcText.Texts1 = new string[8];
-            npcText.Texts2 = new string[8];
-            npcText.Languages = new Language?[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
-            npcText.EmoteDelays = new uint?[8][];
-            npcText.EmoteIds = new EmoteType?[8][];
+            npcText.Probability = new float?[8];
+            npcText.Text = new string[8];
+            npcText.Text1 = new string[8];
+            npcText.Language = new Language?[8];
+            npcText.EmoteDelay = new uint?[8][];
+            npcText.Emote = new EmoteType?[8][];
+
             for (int i = 0; i < 8; i++)
             {
-                npcText.Probabilities[i] = packet.ReadSingle("Probability", i);
+                npcText.Probability[i] = packet.ReadSingle("Probability", i);
+                npcText.Text[i] = packet.ReadCString("Text 1", i);
+                npcText.Text1[i] = packet.ReadCString("Text 2", i);
+                npcText.Language[i] = packet.ReadInt32E<Language>("Language", i);
 
-                npcText.Texts1[i] = packet.ReadCString("Text 1", i);
-
-                npcText.Texts2[i] = packet.ReadCString("Text 2", i);
-
-                npcText.Languages[i] = packet.ReadInt32E<Language>("Language", i);
-
-                npcText.EmoteDelays[i] = new uint?[3];
-                npcText.EmoteIds[i] = new EmoteType?[3];
+                npcText.EmoteDelay[i] = new uint?[3];
+                npcText.Emote[i] = new EmoteType?[3];
                 for (int j = 0; j < 3; j++)
                 {
-                    npcText.EmoteDelays[i][j] = packet.ReadUInt32("Emote Delay", i, j);
-                    npcText.EmoteIds[i][j] = packet.ReadUInt32E<EmoteType>("Emote ID", i, j);
+                    npcText.EmoteDelay[i][j] = packet.ReadUInt32("Emote Delay", i, j);
+                    npcText.Emote[i][j] = packet.ReadUInt32E<EmoteType>("Emote ID", i, j);
                 }
             }
 

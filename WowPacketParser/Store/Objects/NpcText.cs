@@ -7,124 +7,100 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("npc_text")]
     public class NpcText : IDataModel
     {
-        public float?[] Probabilities;
-
-        public string[] Texts1;
-
-        public string[] Texts2;
-
-        public Language?[] Languages;
-
-        public uint?[][] EmoteDelays;
-
-        public EmoteType?[][] EmoteIds;
+        public string[] Text;
+        public string[] Text1;
+        public Language?[] Language;
+        public float?[] Probability;
+        public uint?[][] EmoteDelay;
+        public EmoteType?[][] Emote;
 
         public void ConvertToDBStruct()
         {
-            // Seriously...
+            Text00 = Text[0];
+            Text10 = Text[1];
+            Text20 = Text[2];
+            Text30 = Text[3];
+            Text40 = Text[4];
+            Text50 = Text[5];
+            Text60 = Text[6];
+            Text70 = Text[7];
 
-            Prob0 = Probabilities[0];
-            Prob1 = Probabilities[1];
-            Prob2 = Probabilities[2];
-            Prob3 = Probabilities[3];
-            Prob4 = Probabilities[4];
-            Prob5 = Probabilities[5];
-            Prob6 = Probabilities[6];
-            Prob7 = Probabilities[7];
+            Text01 = Text1[0];
+            Text11 = Text1[1];
+            Text21 = Text1[2];
+            Text31 = Text1[3];
+            Text41 = Text1[4];
+            Text51 = Text1[5];
+            Text61 = Text1[6];
+            Text71 = Text1[7];
 
-            Lang0 = Languages[0];
-            Lang1 = Languages[1];
-            Lang2 = Languages[2];
-            Lang3 = Languages[3];
-            Lang4 = Languages[4];
-            Lang5 = Languages[5];
-            Lang6 = Languages[6];
-            Lang7 = Languages[7];
+            Lang0 = Language[0];
+            Lang1 = Language[1];
+            Lang2 = Language[2];
+            Lang3 = Language[3];
+            Lang4 = Language[4];
+            Lang5 = Language[5];
+            Lang6 = Language[6];
+            Lang7 = Language[7];
 
-            Text00 = Texts1[0];
-            Text10 = Texts1[1];
-            Text20 = Texts1[2];
-            Text30 = Texts1[3];
-            Text40 = Texts1[4];
-            Text50 = Texts1[5];
-            Text60 = Texts1[6];
-            Text70 = Texts1[7];
+            Prob0 = Probability[0];
+            Prob1 = Probability[1];
+            Prob2 = Probability[2];
+            Prob3 = Probability[3];
+            Prob4 = Probability[4];
+            Prob5 = Probability[5];
+            Prob6 = Probability[6];
+            Prob7 = Probability[7];
 
-            Text01 = Texts2[0];
-            Text11 = Texts2[1];
-            Text21 = Texts2[2];
-            Text31 = Texts2[3];
-            Text41 = Texts2[4];
-            Text51 = Texts2[5];
-            Text61 = Texts2[6];
-            Text71 = Texts2[7];
+            EmoteDelay00 = EmoteDelay[0][0];
+            EmoteDelay01 = EmoteDelay[0][1];
+            EmoteDelay02 = EmoteDelay[0][2];
+            EmoteDelay10 = EmoteDelay[1][0];
+            EmoteDelay11 = EmoteDelay[1][1];
+            EmoteDelay12 = EmoteDelay[1][2];
+            EmoteDelay20 = EmoteDelay[2][0];
+            EmoteDelay21 = EmoteDelay[2][1];
+            EmoteDelay22 = EmoteDelay[2][2];
+            EmoteDelay30 = EmoteDelay[3][0];
+            EmoteDelay31 = EmoteDelay[3][1];
+            EmoteDelay32 = EmoteDelay[3][2];
+            EmoteDelay40 = EmoteDelay[4][0];
+            EmoteDelay41 = EmoteDelay[4][1];
+            EmoteDelay42 = EmoteDelay[4][2];
+            EmoteDelay50 = EmoteDelay[5][0];
+            EmoteDelay51 = EmoteDelay[5][1];
+            EmoteDelay52 = EmoteDelay[5][2];
+            EmoteDelay60 = EmoteDelay[6][0];
+            EmoteDelay61 = EmoteDelay[6][1];
+            EmoteDelay62 = EmoteDelay[6][2];
+            EmoteDelay70 = EmoteDelay[7][0];
+            EmoteDelay71 = EmoteDelay[7][1];
+            EmoteDelay72 = EmoteDelay[7][2];
 
-            //Emote0X = new uint?[3];
-            //Emote1X = new uint?[3];
-            //Emote2X = new uint?[3];
-            //Emote3X = new uint?[3];
-            //Emote4X = new uint?[3];
-            //Emote5X = new uint?[3];
-            //Emote6X = new uint?[3];
-            //Emote7X = new uint?[3];
-            //
-            //EmoteDelay0X = new uint?[3];
-            //EmoteDelay1X = new uint?[3];
-            //EmoteDelay2X = new uint?[3];
-            //EmoteDelay3X = new uint?[3];
-            //EmoteDelay4X = new uint?[3];
-            //EmoteDelay5X = new uint?[3];
-            //EmoteDelay6X = new uint?[3];
-            //EmoteDelay7X = new uint?[3];
-
-            Emote00 = (uint) EmoteIds[0][0];
-            Emote01 = (uint) EmoteIds[0][1];
-            Emote02 = (uint) EmoteIds[0][2];
-            EmoteDelay00 =     EmoteDelays[0][0];
-            EmoteDelay01 =     EmoteDelays[0][1];
-            EmoteDelay02 =     EmoteDelays[0][2];
-            Emote10 = (uint) EmoteIds[1][0];
-            Emote11 = (uint) EmoteIds[1][1];
-            Emote12 = (uint) EmoteIds[1][2];
-            EmoteDelay10 =     EmoteDelays[1][0];
-            EmoteDelay11 =     EmoteDelays[1][1];
-            EmoteDelay12 =     EmoteDelays[1][2];
-            Emote20 = (uint) EmoteIds[2][0];
-            Emote21 = (uint) EmoteIds[2][1];
-            Emote22 = (uint) EmoteIds[2][2];
-            EmoteDelay20 =     EmoteDelays[2][0];
-            EmoteDelay21 =     EmoteDelays[2][1];
-            EmoteDelay22 =     EmoteDelays[2][2];
-            Emote30 = (uint) EmoteIds[3][0];
-            Emote31 = (uint) EmoteIds[3][1];
-            Emote32 = (uint) EmoteIds[3][2];
-            EmoteDelay30 =     EmoteDelays[3][0];
-            EmoteDelay31 =     EmoteDelays[3][1];
-            EmoteDelay32 =     EmoteDelays[3][2];
-            Emote40 = (uint) EmoteIds[4][0];
-            Emote41 = (uint) EmoteIds[4][1];
-            Emote42 = (uint) EmoteIds[4][2];
-            EmoteDelay40 =     EmoteDelays[4][0];
-            EmoteDelay41 =     EmoteDelays[4][1];
-            EmoteDelay42 =     EmoteDelays[4][2];
-            Emote50 = (uint) EmoteIds[5][0];
-            Emote51 = (uint) EmoteIds[5][1];
-            Emote52 = (uint) EmoteIds[5][2];
-            EmoteDelay50 =     EmoteDelays[5][0];
-            EmoteDelay51 =     EmoteDelays[5][1];
-            EmoteDelay52 =     EmoteDelays[5][2];
-            Emote60 = (uint) EmoteIds[6][0];
-            Emote61 = (uint) EmoteIds[6][1];
-            Emote62 = (uint) EmoteIds[6][2];
-            EmoteDelay60 =     EmoteDelays[6][0];
-            EmoteDelay61 =     EmoteDelays[6][1];
-            EmoteDelay62 =     EmoteDelays[6][2];
-            Emote70 = (uint) EmoteIds[7][0];
-            Emote71 = (uint) EmoteIds[7][1];
-            Emote72 = (uint) EmoteIds[7][2];
-            EmoteDelay70 =     EmoteDelays[7][0];
-            EmoteDelay71 =     EmoteDelays[7][1];
-            EmoteDelay72 =     EmoteDelays[7][2];
+            Emote00 = Emote[0][0];
+            Emote01 = Emote[0][1];
+            Emote02 = Emote[0][2];
+            Emote10 = Emote[1][0];
+            Emote11 = Emote[1][1];
+            Emote12 = Emote[1][2];
+            Emote20 = Emote[2][0];
+            Emote21 = Emote[2][1];
+            Emote22 = Emote[2][2];
+            Emote30 = Emote[3][0];
+            Emote31 = Emote[3][1];
+            Emote32 = Emote[3][2];
+            Emote40 = Emote[4][0];
+            Emote41 = Emote[4][1];
+            Emote42 = Emote[4][2];
+            Emote50 = Emote[5][0];
+            Emote51 = Emote[5][1];
+            Emote52 = Emote[5][2];
+            Emote60 = Emote[6][0];
+            Emote61 = Emote[6][1];
+            Emote62 = Emote[6][2];
+            Emote70 = Emote[7][0];
+            Emote71 = Emote[7][1];
+            Emote72 = Emote[7][2];
         }
 
         [DBFieldName("ID", true)]
@@ -136,8 +112,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text0_1")]
         public string Text01;
 
-        [DBFieldName("BroadcastTextID0", false, true)]
-        public object BroadcastTextID0;
+        [DBFieldName("BroadcastTextID0")]
+        public uint? BroadcastTextID0;
 
         [DBFieldName("lang0")]
         public Language? Lang0;
@@ -155,13 +131,13 @@ namespace WowPacketParser.Store.Objects
         public uint? EmoteDelay02;
 
         [DBFieldName("Emote0_0")]
-        public uint? Emote00;
+        public EmoteType? Emote00;
 
         [DBFieldName("Emote0_1")]
-        public uint? Emote01;
+        public EmoteType? Emote01;
 
         [DBFieldName("Emote0_2")]
-        public uint? Emote02;
+        public EmoteType? Emote02;
 
         [DBFieldName("text1_0")]
         public string Text10;
@@ -169,8 +145,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text1_1")]
         public string Text11;
 
-        [DBFieldName("BroadcastTextID1", false, true)]
-        public object BroadcastTextID1;
+        [DBFieldName("BroadcastTextID1")]
+        public uint? BroadcastTextID1;
 
         [DBFieldName("lang1")]
         public Language? Lang1;
@@ -188,13 +164,13 @@ namespace WowPacketParser.Store.Objects
         public uint? EmoteDelay12;
 
         [DBFieldName("Emote1_0")]
-        public uint? Emote10;
+        public EmoteType? Emote10;
 
         [DBFieldName("Emote1_1")]
-        public uint? Emote11;
+        public EmoteType? Emote11;
 
         [DBFieldName("Emote1_2")]
-        public uint? Emote12;
+        public EmoteType? Emote12;
 
         [DBFieldName("text2_0")]
         public string Text20;
@@ -202,8 +178,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text2_1")]
         public string Text21;
 
-        [DBFieldName("BroadcastTextID2", false, true)]
-        public object BroadcastTextID2;
+        [DBFieldName("BroadcastTextID2")]
+        public uint? BroadcastTextID2;
 
         [DBFieldName("lang2")]
         public Language? Lang2;
@@ -221,13 +197,13 @@ namespace WowPacketParser.Store.Objects
         public uint? EmoteDelay22;
 
         [DBFieldName("Emote2_0")]
-        public uint? Emote20;
+        public EmoteType? Emote20;
 
         [DBFieldName("Emote2_1")]
-        public uint? Emote21;
+        public EmoteType? Emote21;
 
         [DBFieldName("Emote2_2")]
-        public uint? Emote22;
+        public EmoteType? Emote22;
 
         [DBFieldName("text3_0")]
         public string Text30;
@@ -235,8 +211,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text3_1")]
         public string Text31;
 
-        [DBFieldName("BroadcastTextID3", false, true)]
-        public object BroadcastTextID3;
+        [DBFieldName("BroadcastTextID3")]
+        public uint? BroadcastTextID3;
 
         [DBFieldName("lang3")]
         public Language? Lang3;
@@ -254,13 +230,13 @@ namespace WowPacketParser.Store.Objects
         public uint? EmoteDelay32;
 
         [DBFieldName("Emote3_0")]
-        public uint? Emote30;
+        public EmoteType? Emote30;
 
         [DBFieldName("Emote3_1")]
-        public uint? Emote31;
+        public EmoteType? Emote31;
 
         [DBFieldName("Emote3_2")]
-        public uint? Emote32;
+        public EmoteType? Emote32;
 
         [DBFieldName("text4_0")]
         public string Text40;
@@ -268,8 +244,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text4_1")]
         public string Text41;
 
-        [DBFieldName("BroadcastTextID4", false, true)]
-        public object BroadcastTextID4;
+        [DBFieldName("BroadcastTextID4")]
+        public uint? BroadcastTextID4;
 
         [DBFieldName("lang4")]
         public Language? Lang4;
@@ -287,13 +263,13 @@ namespace WowPacketParser.Store.Objects
         public uint? EmoteDelay42;
 
         [DBFieldName("Emote4_0")]
-        public uint? Emote40;
+        public EmoteType? Emote40;
 
         [DBFieldName("Emote4_1")]
-        public uint? Emote41;
+        public EmoteType? Emote41;
 
         [DBFieldName("Emote4_2")]
-        public uint? Emote42;
+        public EmoteType? Emote42;
 
         [DBFieldName("text5_0")]
         public string Text50;
@@ -301,8 +277,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text5_1")]
         public string Text51;
 
-        [DBFieldName("BroadcastTextID5", false, true)]
-        public object BroadcastTextID5;
+        [DBFieldName("BroadcastTextID5")]
+        public uint? BroadcastTextID5;
 
         [DBFieldName("lang5")]
         public Language? Lang5;
@@ -320,13 +296,13 @@ namespace WowPacketParser.Store.Objects
         public uint? EmoteDelay52;
 
         [DBFieldName("Emote5_0")]
-        public uint? Emote50;
+        public EmoteType? Emote50;
 
         [DBFieldName("Emote5_1")]
-        public uint? Emote51;
+        public EmoteType? Emote51;
 
         [DBFieldName("Emote5_2")]
-        public uint? Emote52;
+        public EmoteType? Emote52;
 
         [DBFieldName("text6_0")]
         public string Text60;
@@ -334,8 +310,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text6_1")]
         public string Text61;
 
-        [DBFieldName("BroadcastTextID6", false, true)]
-        public object BroadcastTextID6;
+        [DBFieldName("BroadcastTextID6")]
+        public uint? BroadcastTextID6;
 
         [DBFieldName("lang6")]
         public Language? Lang6;
@@ -353,13 +329,13 @@ namespace WowPacketParser.Store.Objects
         public uint? EmoteDelay62;
 
         [DBFieldName("Emote6_0")]
-        public uint? Emote60;
+        public EmoteType? Emote60;
 
         [DBFieldName("Emote6_1")]
-        public uint? Emote61;
+        public EmoteType? Emote61;
 
         [DBFieldName("Emote6_2")]
-        public uint? Emote62;
+        public EmoteType? Emote62;
 
         [DBFieldName("text7_0")]
         public string Text70;
@@ -367,8 +343,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("text7_1")]
         public string Text71;
 
-        [DBFieldName("BroadcastTextID7", false, true)]
-        public object BroadcastTextID7;
+        [DBFieldName("BroadcastTextID7")]
+        public uint? BroadcastTextID7;
 
         [DBFieldName("lang7")]
         public Language? Lang7;
@@ -386,13 +362,13 @@ namespace WowPacketParser.Store.Objects
         public uint? EmoteDelay72;
 
         [DBFieldName("Emote7_0")]
-        public uint? Emote70;
+        public EmoteType? Emote70;
 
         [DBFieldName("Emote7_1")]
-        public uint? Emote71;
+        public EmoteType? Emote71;
 
         [DBFieldName("Emote7_2")]
-        public uint? Emote72;
+        public EmoteType? Emote72;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
