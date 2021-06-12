@@ -1,4 +1,4 @@
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using Sigil;
 using System;
 using System.Collections.Generic;

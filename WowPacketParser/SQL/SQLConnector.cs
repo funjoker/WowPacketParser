@@ -2,7 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
