@@ -79,8 +79,12 @@ namespace WowPacketParser.SQL
                 if (server == ".")
                 {
                     server = "localhost";
-                    portOrPipe = "Pipe";
+                    portOrPipe = "PipeName";
                     protocol = "ConnectionProtocol=Pipe;";
+
+                    return
+                    $"Server={server};Username={Settings.Username};Password={Settings.Password};" +
+                    $"Database={Settings.WPPDatabase};CharSet={Settings.CharacterSet};ConnectionTimeout=5;{protocol}{portOrPipe}={Settings.Port};";
                 }
 
                 return
